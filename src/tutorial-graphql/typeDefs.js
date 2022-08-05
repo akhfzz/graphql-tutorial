@@ -4,12 +4,25 @@ let typeDefs = `
         numbers(number: [Int!]): Int!
         get: [Student!]
         post: [Post!]
-        comment: [Comment!]
+        comment: [Comment!]!
     }
 
     type Mutation{
-        inputMhs(nim: Int!, nama: String!, alamat: String!, GPA: Float!): Student!
-        createPost(title: String!, body: String!, publish: Boolean!, user_id: ID!): Post!
+        inputMhs(data: ParamsMhs): [Student!]!
+        createPost(data: ParamsPost): Post!
+        createComm(data: ParamsComm): Comment!
+    }
+
+    input ParamsMhs{
+        nim: Int!, nama: String!, alamat: String!, GPA: Float!
+    }
+
+    input ParamsPost{
+        title: String!, body: String!, publish: Boolean!, user_id: ID!
+    }
+
+    input ParamsComm{
+        comment: String!, posts: ID!
     }
 
     type Student{
@@ -19,6 +32,7 @@ let typeDefs = `
         alamat: String!
         GPA: Float!
         posts: [Post!]! 
+        address: String
     }
     type Post{
         post_id: String!
@@ -26,11 +40,11 @@ let typeDefs = `
         body: String!
         publish: Boolean!
         users: Student!
-        comment: Comment!
+        comments: [Comment!]!
     }
     type Comment{
-        id: String
-        comment: String
+        id: String!
+        comment: String!
         posts: Post!
     }
 `

@@ -1,0 +1,1 @@
+babel-transform-object-rest-spread for destructuring object on graph

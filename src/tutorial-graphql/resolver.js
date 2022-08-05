@@ -1,18 +1,24 @@
 import {dataMahasiswa, posting, comment} from './data'
-import { addUser, addPost } from './trigger'
+import { addUser, addPost, addComment } from './trigger'
 import {uuid} from 'uuidv4'
 
 let resolvers = {
     Mutation:{
         inputMhs: (parent, args, ctx, info) => {
-            let nimTaken = dataMahasiswa.some((users) => users.nim === args.nim) ? new Error("NIM has been available") : addUser(uuid(), args.nim, args.nama, args.alamat, args.GPA)
+            let nimTaken = dataMahasiswa.some((users) => users.nim === args.data.nim) ? new Error("NIM has been available") : addUser(uuid(), args.data.nim, args.data.nama, args.data.alamat, args.data.GPA)
+            console.log(nimTaken)
             return nimTaken
         },
         createPost: (parent, args, ctx, info) => {
             // console.log(args)
-            let userHasRegistered = dataMahasiswa.some((users) => users.id === args.user_id) ? addPost(uuid(), args.title, args.body, args.publish, args.user_id) : new Error("Users not found")
-            console.log(userHasRegistered)
+            let userHasRegistered = dataMahasiswa.some((users) => users.id === args.data.user_id) ? addPost(uuid(), args.data.title, args.data.body, args.data.publish, args.data.user_id) : new Error("Users not found")
+            // console.log(userHasRegistered)
             return userHasRegistered
+        },
+        createComm: (parent, args, ctx, info) => {
+            let commentHasPosted = posting.some((posts) => posts.post_id === args.data.posts) ? addComment(uuid(), args.data.comment, args.data.posts) : new Error("Nothing posted")
+            // console.log(commentHasPosted)
+            return commentHasPosted
         }
     },
     Query: {
@@ -23,6 +29,7 @@ let resolvers = {
             let data = dataMahasiswa.filter((dt) =>{
                 return dt.nama.toLowerCase().includes(args.nama.toLowerCase())
             })
+            console.log(data)
             return data
         },
         get: () => {
@@ -48,19 +55,19 @@ let resolvers = {
         },
         comment: () => {
             return comment
-        },
+        }
     },
     Post: {
         users: (parent, args,ctx, info) => {
             let data = dataMahasiswa.find((users) =>{
-                console.log(parent)
-                return users.id === parent.users
+                return users.id === parent.user_id
             })
+            // console.log(data)
             return data
         },
 
-        comment: (parent, args, ctx, info) => {
-            let data = comment.find((comm) => {
+        comments: (parent, args, ctx, info) => {
+            let data = comment.filter((comm) => {
                 return comm.postID === parent.post_id
             })
             return data
@@ -69,7 +76,6 @@ let resolvers = {
     Comment: {
         posts: (parent, args, ctx, info) =>{
             let data = posting.find((posted) => {
-                // console.log(parent)
                 return posted.post_id === parent.postID
             })
             return data
@@ -78,7 +84,6 @@ let resolvers = {
     Student: {
         posts: (parent, args, ctx, info) => {
             let data = posting.filter((posted) => {
-                console.log(posted)
                 return posted.user_id === parent.id
             })
             return data
