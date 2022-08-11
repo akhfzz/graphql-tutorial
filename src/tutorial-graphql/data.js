@@ -26,7 +26,7 @@ const posting = [
     {
         post_id: 'Abcxn',
         title: "Crown",
-        body: 'The suhu is 18',
+        body: 'The suhu is 17',
         publish: false,
         user_id: 'acv'
     },
@@ -40,7 +40,7 @@ const posting = [
     {
         post_id: 'Bcbxn',
         title: "News",
-        body: 'The suhu is 18',
+        body: 'The suhu is 19',
         publish: true,
         user_id: 'abv'
     }
@@ -58,5 +58,6 @@ const comment = [
         postID: 'Abcxn'
     }
 ]
+
 
 export {dataMahasiswa, comment, posting}
