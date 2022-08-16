@@ -1,4 +1,4 @@
-import { addUser, addPost, addComment, deleteUser } from '../trigger'
+import { addUser, addPost, addComment, deleteUser, updateUser } from '../trigger'
 import {uuid} from 'uuidv4'
 
 const Mutation = {
@@ -22,6 +22,12 @@ const Mutation = {
         let commentHasPosted = ctx.db.posting.some((posts) => posts.post_id === args.data.posts) ? addComment(ctx,uuid(), args.data.comment, args.data.posts) : new Error("Nothing posted")
         // console.log(commentHasPosted)
         return commentHasPosted
+    },
+    updateStud: (parent, args, ctx, info) => {
+        let { id ,data } = args
+        let updateVar = ctx.db.dataMahasiswa.some((user) => user.id === id) ? updateUser(ctx, id, data) : new Error("User not found")
+        // console.log(updateVar)
+        return updateVar
     }
 }
 

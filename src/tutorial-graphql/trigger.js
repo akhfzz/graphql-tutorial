@@ -19,6 +19,18 @@ let deleteUser = (ctx, id) => {
     return ctx.db.dataMahasiswa
 }
 
+let updateUser = (ctx, id, data) => {
+    let user = ctx.db.dataMahasiswa.find((user) => user.id === id)
+    if(!user){return new Error("Student not found")}
+    if(typeof data.nim === 'number'){
+        ctx.db.dataMahasiswa.some((user)=> user.nim === data.nim) ? new Error("NIM has been exist") : user.nim = data.nim
+    }
+    if(typeof data.nama === 'string'){
+        ctx.db.dataMahasiswa.some((user) => user.nama === data.nama) ? new Error("Nama has been exist") : user.nama = data.nama
+    }
+    return ctx.db.dataMahasiswa
+}
+
 let addPost = (ctx, post_id, title, body, publish, user_id) => {
     const post = {post_id, title, body, publish, user_id}
     ctx.db.posting.push(post)
@@ -31,4 +43,4 @@ let addComment = (ctx, id, comment, postID) => {
     return comm
 }
 
-export {addUser, addPost, addComment, deleteUser}
+export {addUser, addPost, addComment, deleteUser, updateUser}

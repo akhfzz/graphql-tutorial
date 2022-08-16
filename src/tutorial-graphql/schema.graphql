@@ -6,11 +6,21 @@ type Query{
     comment: [Comment!]!
 }
 
+type Subscription{
+    count: Int!
+}
+
 type Mutation{
     inputMhs(data: ParamsMhs): [Student!]!
     createPost(data: ParamsPost): Post!
     createComm(data: ParamsComm): Comment!
     deleteMhs(id: ID!): [Student!]!
+    updateStud(id: ID!, data: updateMhs): [Student!]!
+}
+
+input updateMhs{
+    nim:Int!
+    nama: String!
 }
 
 input ParamsMhs{
