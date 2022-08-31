@@ -39,7 +39,10 @@ let addPost = (ctx, post_id, title, body, publish, user_id) => {
 
 let addComment = (ctx, id, comment, postID) => {
     const comm = {id, comment, postID}
-    ctx.db.comments.push(comm)
+    ctx.db.comment.push(comm)
+    ctx.pubsub.publish(`comment_user ${postID}`, {
+        comment: comm
+    })
     return comm
 }
 

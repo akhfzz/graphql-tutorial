@@ -6,7 +6,9 @@ const Query = {
         let data = ctx.db.dataMahasiswa.filter((dt) =>{
             return dt.nama.toLowerCase().includes(args.nama.toLowerCase())
         })
-        console.log(data)
+        ctx.pubsub.publish(`users ${args.nama}`, {
+            users: data
+        })
         return data
     },
     get: (parent, args, ctx, info) => {
@@ -31,6 +33,7 @@ const Query = {
         return ctx.db.posting
     },
     comment: (parent, args, ctx, info) => {
+        ctx.pubsub.publish("comment", ctx.db.comment)
         return ctx.db.comment
     }
 }

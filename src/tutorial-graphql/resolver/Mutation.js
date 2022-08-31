@@ -20,7 +20,6 @@ const Mutation = {
     },
     createComm: (parent, args, ctx, info) => {
         let commentHasPosted = ctx.db.posting.some((posts) => posts.post_id === args.data.posts) ? addComment(ctx,uuid(), args.data.comment, args.data.posts) : new Error("Nothing posted")
-        // console.log(commentHasPosted)
         return commentHasPosted
     },
     updateStud: (parent, args, ctx, info) => {
